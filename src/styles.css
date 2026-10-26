@@ -81,3 +81,8 @@ h2{font-size:clamp(1.1rem,3.6vw,2rem);max-width:24ch}
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 @keyframes scaleUp{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
+.admin-modal.admin-login{max-width:420px;height:auto}
+.admin-key-form{display:flex;flex-direction:column;align-items:center;gap:12px;padding:24px 20px 28px;color:#c0b79d;text-align:center}
+.admin-key-form p{margin:0;font-size:.92rem}
+.admin-key-form .search-box{width:100%;flex:none}
+.admin-key-error{color:#ec7063}
