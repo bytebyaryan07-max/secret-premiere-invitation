@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import gsap from 'gsap'
-import { Volume2, VolumeX, RotateCcw, Download, Users } from 'lucide-react'
+import { Volume2, VolumeX, Download, Users } from 'lucide-react'
 import Stage from './components/Stage'
 import Entrance from './scenes/Entrance'
 import NameEntry from './scenes/NameEntry'
@@ -59,16 +59,7 @@ export default function App() {
     go('reveal')
   }
 
-  const skip = () => {
-    if (scene === 'invitation') { setSkipKey((k) => k + 1); setRevealed(true) }
-    else {
-      const fallback = name || EVENT.fallbackGuestName
-      setName(fallback)
-      trackVisit(fallback).then((id) => setVisitId(id))
-      go('invitation')
-    }
-  }
-  const replay = () => { setRevealed(false); setRunKey((k) => k + 1) }
+
   const download = async () => {
     // Record download/save action in PostgreSQL
     trackSave(visitId, name)
@@ -86,7 +77,7 @@ export default function App() {
   return (
     <>
       {webgl ? <Stage scene={scene} mode={mode} name={name || EVENT.fallbackGuestName} runKey={runKey} skipKey={skipKey} onRevealed={onRevealed} />
-             : <div className="fallback-bg" />}
+        : <div className="fallback-bg" />}
 
       {scene === 'entrance' && <Entrance onBegin={() => { ping(); go('name') }} />}
       {scene === 'name' && <NameEntry onSubmit={onNameSubmit} />}
@@ -112,16 +103,11 @@ export default function App() {
         {sound ? <Volume2 size={18} /> : <VolumeX size={18} />}
       </button>
 
-      <div className="toolbar">
-        {scene === 'invitation' && revealed ? (
-          <>
-            <button className="btn small" onClick={replay}><RotateCcw size={14} /> REPLAY</button>
-            <button className="btn small" onClick={download}><Download size={14} /> SAVE</button>
-          </>
-        ) : !(scene === 'invitation' && !webgl) && (
-          <button className="link" onClick={skip}>Skip animation</button>
-        )}
-      </div>
+      {scene === 'invitation' && revealed && (
+        <div className="toolbar">
+          <button className="btn small" onClick={download}><Download size={14} /> SAVE</button>
+        </div>
+      )}
 
       {/* Analytics Modal */}
       <AdminDashboard isOpen={showAdmin} onClose={() => setShowAdmin(false)} />
