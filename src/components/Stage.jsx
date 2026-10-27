@@ -37,7 +37,7 @@ function Glow() { // the distant golden light
     return new THREE.CanvasTexture(c)
   }, [])
   return (
-    <sprite position={[0, 0.5, -14]} scale={[18, 18, 1]}>
+    <sprite position={[0, 1.2, -14]} scale={[18, 18, 1]}>
       <spriteMaterial map={tex} transparent opacity={0.28} depthWrite={false} blending={THREE.AdditiveBlending} fog={false} />
     </sprite>
   )
@@ -78,7 +78,7 @@ function Particles({ mode, count }) {
         const n = i * 3 + j
         if (bursting) { cur[n] += vel[n] * dt; vel[n] *= 0.985 }
         else {
-          const target = mode === "converge" ? home[n] * 0.04 : home[n] + Math.sin(t * 0.25 + i * 1.7 + j) * 0.18
+          const target = mode === "converge" ? home[n] * 0.04 : home[n] + Math.sin(t * 0.20 + i * 1.7 + j) * 0.15
           cur[n] += (target - cur[n]) * k
         }
       }
@@ -95,22 +95,26 @@ function Particles({ mode, count }) {
 
 function Emblem({ scene }) { // the one hero object: a floating golden armillary emblem
   const g = useRef(), inner = useRef(), r1 = useRef(), r2 = useRef(), r3 = useRef()
+  const mobile = typeof window !== 'undefined' && window.matchMedia("(max-width: 768px)").matches
+  const entranceY = mobile ? 1.45 : 1.35
+  const entranceScale = mobile ? 0.78 : 0.92
+
   useFrame(({ clock }, dt) => {
     r1.current.rotation.x += dt * 0.4; r1.current.rotation.y += dt * 0.25
     r2.current.rotation.y -= dt * 0.35; r2.current.rotation.z += dt * 0.2
     r3.current.rotation.x -= dt * 0.2; r3.current.rotation.z -= dt * 0.3
     inner.current.rotation.y += dt * 0.5
-    g.current.children[0].position.y = Math.sin(clock.elapsedTime * 0.8) * 0.12
+    g.current.children[0].position.y = Math.sin(clock.elapsedTime * 0.8) * 0.1
   })
   useEffect(() => {
-    const t = { entrance: [1, 0.2, 0], name: [0.5, 2.1, -4], reveal: [0.001, 0, -2], invitation: [0.001, 0, -6] }[scene]
+    const t = { entrance: [entranceScale, entranceY, 0], name: [0.5, 2.1, -4], reveal: [0.001, 0, -2], invitation: [0.001, 0, -6] }[scene]
     const d = scene === "entrance" ? 2.4 : 1.6, delay = scene === "entrance" ? 0.3 : 0
     gsap.to(g.current.scale, { x: t[0], y: t[0], z: t[0], duration: d, delay, ease: "power3.inOut" })
     gsap.to(g.current.position, { y: t[1], z: t[2], duration: d, delay, ease: "power3.inOut" })
-  }, [scene])
+  }, [scene, entranceScale, entranceY])
   const m = <meshStandardMaterial color={GOLD} metalness={1} roughness={0.22} envMapIntensity={1.5} />
   return (
-    <group ref={g} scale={0.001}>
+    <group ref={g} scale={0.001} position={[0, entranceY, 0]}>
       <group>
         <mesh ref={r1}><torusGeometry args={[1.15, 0.035, 24, 120]} />{m}</mesh>
         <mesh ref={r2}><torusGeometry args={[0.9, 0.03, 24, 100]} />{m}</mesh>
