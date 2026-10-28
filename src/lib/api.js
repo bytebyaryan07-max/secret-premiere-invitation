@@ -36,11 +36,24 @@ export async function trackSave(visitId, name) {
 export class AdminAuthError extends Error {}
 
 async function adminFetch(path, adminKey) {
-  const res = await fetch(path, { headers: { 'X-Admin-Key': adminKey } })
-  if (res.status === 401) throw new AdminAuthError('Incorrect admin key')
+  const res = await fetch(path, { headers: { 'X-Admin-Key': adminKey || '' } })
+  if (res.status === 401) throw new AdminAuthError('Incorrect password. Please try again.')
   if (res.status === 503) throw new AdminAuthError('Admin access is not configured on the server')
   if (!res.ok) throw new Error(`HTTP error ${res.status}`)
   return res
+}
+
+export async function fetchHealth() {
+  const start = performance.now()
+  try {
+    const res = await fetch('/api/health')
+    const latency = Math.round(performance.now() - start)
+    if (!res.ok) return { connected: false, latency, error: `HTTP ${res.status}` }
+    const data = await res.json()
+    return { connected: Boolean(data?.db?.connected), latency, data }
+  } catch (err) {
+    return { connected: false, latency: Math.round(performance.now() - start), error: err.message }
+  }
 }
 
 export async function fetchVisitorStats(adminKey) {
@@ -53,7 +66,7 @@ export async function downloadVisitorsCsv(adminKey) {
   const url = URL.createObjectURL(await res.blob())
   const link = document.createElement('a')
   link.href = url
-  link.download = 'secret_premiere_invitation_visitors.csv'
+  link.download = `secret_premiere_visitors_${new Date().toISOString().slice(0, 10)}.csv`
   link.click()
   URL.revokeObjectURL(url)
 }

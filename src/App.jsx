@@ -1,10 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import gsap from 'gsap'
-import { Volume2, VolumeX, Download } from 'lucide-react'
+import { Volume2, VolumeX, Download, BarChart2 } from 'lucide-react'
 import Stage from './components/Stage'
 import Entrance from './scenes/Entrance'
 import NameEntry from './scenes/NameEntry'
 import NameReveal from './scenes/NameReveal'
+import DashboardPanel from './components/DashboardPanel'
 import { EVENT } from './config/event'
 import { drawFront, loadFonts } from './lib/drawInvitation'
 import { chime } from './lib/sound'
@@ -14,7 +15,22 @@ const hasWebGL = () => {
   try { const c = document.createElement('canvas'); return !!(c.getContext('webgl2') || c.getContext('webgl')) } catch { return false }
 }
 
+const checkIsDashboardRoute = () => {
+  if (typeof window === 'undefined') return false
+  const path = window.location.pathname.toLowerCase()
+  const hash = window.location.hash.toLowerCase()
+  const search = window.location.search.toLowerCase()
+  return (
+    path.includes('/dashboard') ||
+    path.includes('/admin') ||
+    hash === '#dashboard' ||
+    hash === '#admin' ||
+    search.includes('view=dashboard')
+  )
+}
+
 export default function App() {
+  const [view, setView] = useState(() => (checkIsDashboardRoute() ? 'dashboard' : 'invitation'))
   const [scene, setScene] = useState('entrance')
   const [name, setName] = useState('')
   const [visitId, setVisitId] = useState(null)
@@ -27,6 +43,28 @@ export default function App() {
   const webgl = useMemo(hasWebGL, [])
   soundRef.current = sound
   const ping = (f) => soundRef.current && chime(f)
+
+  useEffect(() => {
+    const onLocationChange = () => {
+      setView(checkIsDashboardRoute() ? 'dashboard' : 'invitation')
+    }
+    window.addEventListener('popstate', onLocationChange)
+    window.addEventListener('hashchange', onLocationChange)
+    return () => {
+      window.removeEventListener('popstate', onLocationChange)
+      window.removeEventListener('hashchange', onLocationChange)
+    }
+  }, [])
+
+  const navigateTo = (newView) => {
+    if (newView === 'dashboard') {
+      window.history.pushState({}, '', '/dashboard')
+      setView('dashboard')
+    } else {
+      window.history.pushState({}, '', '/')
+      setView('invitation')
+    }
+  }
 
   useEffect(() => { // respect reduced motion: make every GSAP animation near-instant
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) gsap.globalTimeline.timeScale(8)
@@ -57,7 +95,6 @@ export default function App() {
     go('reveal')
   }
 
-
   const download = async () => {
     // Record download/save action in PostgreSQL
     trackSave(visitId, name)
@@ -68,6 +105,11 @@ export default function App() {
       const a = document.createElement('a'); a.href = URL.createObjectURL(b)
       a.download = 'my-invitation.png'; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000)
     })
+  }
+
+  // If viewing the Dashboard Panel
+  if (view === 'dashboard') {
+    return <DashboardPanel onBack={() => navigateTo('invitation')} />
   }
 
   const mode = scene === 'reveal' ? 'converge' : revealed ? 'burst' : 'drift'
@@ -93,6 +135,17 @@ export default function App() {
       <button className="icon top" onClick={() => { setSound((s) => { if (!s) chime([659.25]); return !s }) }}
         aria-pressed={sound} aria-label={sound ? 'Turn sound off' : 'Turn sound on'}>
         {sound ? <Volume2 size={18} /> : <VolumeX size={18} />}
+      </button>
+
+      {/* Discreet Organizer Dashboard Access */}
+      <button
+        className="dashboard-launch-btn"
+        onClick={() => navigateTo('dashboard')}
+        title="Open Organizer Analytics & Visitor Dashboard"
+        aria-label="Organizer Dashboard"
+      >
+        <BarChart2 size={14} />
+        <span>Dashboard</span>
       </button>
 
       {scene === 'invitation' && revealed && (
