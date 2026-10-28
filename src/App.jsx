@@ -1,11 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import gsap from 'gsap'
-import { Volume2, VolumeX, Download, Users } from 'lucide-react'
+import { Volume2, VolumeX, Download } from 'lucide-react'
 import Stage from './components/Stage'
 import Entrance from './scenes/Entrance'
 import NameEntry from './scenes/NameEntry'
 import NameReveal from './scenes/NameReveal'
-import AdminDashboard from './components/AdminDashboard'
 import { EVENT } from './config/event'
 import { drawFront, loadFonts } from './lib/drawInvitation'
 import { chime } from './lib/sound'
@@ -19,7 +18,6 @@ export default function App() {
   const [scene, setScene] = useState('entrance')
   const [name, setName] = useState('')
   const [visitId, setVisitId] = useState(null)
-  const [showAdmin, setShowAdmin] = useState(false)
   const [revealed, setRevealed] = useState(false)
   const [runKey, setRunKey] = useState(0)
   const [skipKey, setSkipKey] = useState(0)
@@ -91,12 +89,6 @@ export default function App() {
         </div>
       )}
 
-      {/* Admin Dashboard Trigger */}
-      <button className="icon admin-btn" onClick={() => setShowAdmin(true)}
-        title="Visitor Analytics & Saves (PostgreSQL)" aria-label="Open visitor analytics">
-        <Users size={18} />
-      </button>
-
       {/* Sound toggle */}
       <button className="icon top" onClick={() => { setSound((s) => { if (!s) chime([659.25]); return !s }) }}
         aria-pressed={sound} aria-label={sound ? 'Turn sound off' : 'Turn sound on'}>
@@ -108,9 +100,6 @@ export default function App() {
           <button className="btn small" onClick={download}><Download size={14} /> SAVE</button>
         </div>
       )}
-
-      {/* Analytics Modal */}
-      <AdminDashboard isOpen={showAdmin} onClose={() => setShowAdmin(false)} />
 
       <div className="veil" ref={veil} />
     </>
