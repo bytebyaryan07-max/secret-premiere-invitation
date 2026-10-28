@@ -37,7 +37,7 @@ export default function App() {
   const [revealed, setRevealed] = useState(false)
   const [runKey, setRunKey] = useState(0)
   const [skipKey, setSkipKey] = useState(0)
-  const [sound, setSound] = useState(false)
+  const [sound, setSound] = useState(true)
   const [fallbackImg, setFallbackImg] = useState('')
   const veil = useRef(), soundRef = useRef(false)
   const webgl = useMemo(hasWebGL, [])
