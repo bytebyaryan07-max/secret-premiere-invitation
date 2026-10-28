@@ -24,7 +24,7 @@ export default function AdminDashboard({ isOpen, onClose }) {
     }
   }
 
-  const loadData = async (key = adminkey) => {
+  const loadData = async (key = adminKey) => {
     if (!key) return
     setLoading(true)
     setError('')

@@ -87,12 +87,12 @@ export async function getTotals(pool) {
 
 export async function getRecentVisitors(pool, limit = 200) {
   const res = await pool.query(
-    `SELECT v.id, v.name, v.visited_at,
+    `SELECT v.id, v.name, v.visited_at, v.user_agent,
             COUNT(s.id)::int AS save_count,
             MAX(s.saved_at)  AS last_saved_at
      FROM visitors v
      LEFT JOIN invitation_saves s ON s.visitor_id = v.id
-     GROUP BY v.id
+     GROUP BY v.id, v.name, v.visited_at, v.user_agent
      ORDER BY v.visited_at DESC
      LIMIT $1`,
     [limit]
@@ -180,7 +180,7 @@ export async function checkDatabase(pool) {
  * Returns 'ok', 'unauthorized', or 'not_configured'.
  */
 export function checkAdminKey(provided) {
-  const expected = process.env.ADMIN_KEY || 'admin123'
+  const expected = process.env.ADMIN_KEY || '12341234'
   if (!provided) return 'unauthorized'
   const a = createHash('sha256').update(String(provided)).digest()
   const b = createHash('sha256').update(expected).digest()
@@ -196,9 +196,9 @@ export function visitorsToCsv(visitors) {
   }
   const toIso = (d) => (d ? new Date(d).toISOString() : '')
 
-  const rows = [['ID', 'Guest Name', 'Visited At', 'Save Count', 'Last Saved At'].join(',')]
+  const rows = [['ID', 'Guest Name', 'Visited At', 'Save Count', 'Last Saved At', 'Device / Browser'].join(',')]
   for (const v of visitors) {
-    rows.push([v.id, escape(v.name), escape(toIso(v.visited_at)), v.save_count, escape(toIso(v.last_saved_at))].join(','))
+    rows.push([v.id, escape(v.name), escape(toIso(v.visited_at)), v.save_count, escape(toIso(v.last_saved_at)), escape(v.user_agent || '')].join(','))
   }
   return rows.join('\n')
 }
