@@ -23,7 +23,8 @@ export default function NameEntry({ onSubmit }) {
   return (
     <section className="scene" ref={root}>
       <form onSubmit={submit} noValidate className="nameform">
-        <h2 className="fade">BEFORE WE REVEAL THE SECRET...</h2>
+        <p className="kicker fade">NEXORA • 1 NOVEMBER 2026</p>
+        <h2 className="fade">BEFORE WE REVEAL YOUR INVITATION...</h2>
         <p className="sub fade">Every great story begins with a name.</p>
         <input ref={inp} className="field fade" value={v} maxLength={24} autoComplete="given-name"
           placeholder="Enter your name" aria-label="Your name" aria-invalid={!!err}

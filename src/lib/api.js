@@ -80,7 +80,7 @@ export async function downloadVisitorsCsv(adminKey) {
   const url = URL.createObjectURL(await res.blob())
   const link = document.createElement('a')
   link.href = url
-  link.download = `secret_premiere_visitors_${new Date().toISOString().slice(0, 10)}.csv`
+  link.download = `nexora_visitors_${new Date().toISOString().slice(0, 10)}.csv`
   link.click()
   URL.revokeObjectURL(url)
 }

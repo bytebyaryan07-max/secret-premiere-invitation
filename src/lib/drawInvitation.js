@@ -52,7 +52,11 @@ export function drawFront(canvas, name, w = 1000) {
   x.font = `italic 400 42px ${S}`; x.fillText(EVENT.tagline, 500, 735)
   x.font = `400 32px ${S}`; x.fillStyle = "#cfc7b0"; x.fillText(EVENT.audience, 500, 800)
 
-  ;[["DATE", EVENT.date], ["TIME", EVENT.time], ["VENUE", EVENT.venue]].forEach(([l, v], i) => {
+  ;[
+    ["DATE", EVENT.date || "01 NOVEMBER 2026"],
+    ["TIME", EVENT.time || "07:00 PM ONWARDS"],
+    ["VENUE", EVENT.venue || "SECRET PREMIERE VENUE"]
+  ].forEach(([l, v], i) => {
     const y = 900 + i * 125
     x.letterSpacing = "8px"; x.fillStyle = G; x.font = `400 24px ${D}`; x.fillText(l, 504, y)
     x.letterSpacing = "1px"; x.fillStyle = "#fff"; fit(x, v, 780, 46, 400, S); x.fillText(v, 500, y + 52)
@@ -68,5 +72,9 @@ export function drawBack(canvas) {
   x.strokeStyle = G
   ;[170, 140, 118].forEach((r, i) => { x.lineWidth = i === 0 ? 4 : 2; x.beginPath(); x.arc(500, 640, r, 0, 7); x.stroke() })
   x.fillStyle = G; diamond(x, 500, 640, 85); x.fill()
-  x.letterSpacing = "12px"; x.font = `400 28px ${D}`; x.fillText("BY INVITATION ONLY", 506, 960)
+  x.letterSpacing = "14px"; x.font = `600 32px ${D}`; x.fillText(EVENT.name || "NEXORA", 507, 395)
+  x.letterSpacing = "6px"; x.font = `400 18px ${D}`; x.fillStyle = "#cfc7b0"; x.fillText(EVENT.date || "01 NOVEMBER 2026", 503, 438)
+  x.fillStyle = G
+  x.letterSpacing = "12px"; x.font = `400 26px ${D}`; x.fillText("BY INVITATION ONLY", 506, 960)
 }
+

@@ -88,7 +88,7 @@ export default function AdminDashboard({ isOpen, onClose }) {
           </div>
           <form className="admin-key-form" onSubmit={submitKey}>
             <Lock size={22} />
-            <p>Enter the admin key to view visitor statistics.</p>
+            <p>Enter the admin key to view NEXORA visitor statistics.</p>
             <div className="search-box">
               <input
                 type="password"
@@ -116,7 +116,7 @@ export default function AdminDashboard({ isOpen, onClose }) {
               <Database size={15} />
               <span>{isPostgres ? 'PostgreSQL Live' : 'Connecting…'}</span>
             </div>
-            <h2>Visitor & Save Analytics</h2>
+            <h2>NEXORA — Visitor Analytics</h2>
           </div>
           <button className="admin-close-btn" onClick={onClose} aria-label="Close dashboard">
             <X size={20} />

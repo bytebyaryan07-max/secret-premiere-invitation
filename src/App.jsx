@@ -103,7 +103,10 @@ export default function App() {
     const c = document.createElement('canvas'); drawFront(c, name, 1200)
     c.toBlob((b) => {
       const a = document.createElement('a'); a.href = URL.createObjectURL(b)
-      a.download = 'my-invitation.png'; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000)
+      const safeName = (name || 'guest').toLowerCase().replace(/[^a-z0-9]+/g, '-')
+      a.download = `nexora-invitation-${safeName}.png`
+      a.click()
+      setTimeout(() => URL.revokeObjectURL(a.href), 1000)
     })
   }
 

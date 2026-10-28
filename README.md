@@ -1,6 +1,6 @@
-# Secret Senior Invitation (with PostgreSQL Tracking)
+# NEXORA — Secret Senior Premiere Invitation
 
-An interactive 3D invitation experience for seniors, equipped with PostgreSQL database tracking to see who visited and who saved/downloaded their invitation.
+An interactive 3D invitation experience for seniors attending **NEXORA** on **01 November 2026**, equipped with PostgreSQL database tracking to see who visited and who saved/downloaded their personalized invitation.
 
 ## Quick Start
 
