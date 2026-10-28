@@ -278,7 +278,7 @@ export default function DashboardPanel({ onBack }) {
           </div>
           <div className="dp-auth-header">
             <h2>Organizer Access</h2>
-            <p className="dp-auth-desc">Enter the password to view visitor statistics and guest analytics.</p>
+            <p className="dp-auth-desc">Enter the password to view NEXORA guest analytics and visitor tracking.</p>
           </div>
 
           <form onSubmit={handleUnlock} className="dp-auth-form">
@@ -348,7 +348,7 @@ export default function DashboardPanel({ onBack }) {
               <Sparkles size={18} className="dp-gold-icon" />
               <h1>Organizer Dashboard</h1>
             </div>
-            <p className="dp-subtitle">Real-time Guest Tracker & Invitation Analytics</p>
+            <p className="dp-subtitle">Real-time Guest Tracker & Invitation Analytics • NEXORA</p>
           </div>
         </div>
 
@@ -472,7 +472,7 @@ export default function DashboardPanel({ onBack }) {
                 <Calendar size={18} />
               </div>
             </div>
-            <div className="dp-event-mini-title">{EVENT.name || 'Secret Premiere'}</div>
+            <div className="dp-event-mini-title">{EVENT.name || 'NEXORA'}</div>
             <div className="dp-event-mini-details">
               <span><Clock size={12} /> {EVENT.date} • {EVENT.time}</span>
               <span><MapPin size={12} /> {EVENT.venue}</span>

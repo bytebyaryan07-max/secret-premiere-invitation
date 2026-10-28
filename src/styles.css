@@ -6,10 +6,15 @@ body{font-family:var(--serif);-webkit-font-smoothing:antialiased}
 .fallback-bg{position:fixed;inset:0;background:radial-gradient(ellipse at 50% 30%,#2a210a,#030307 65%)}
 .scene{position:fixed;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px 24px calc(80px + env(safe-area-inset-bottom));pointer-events:none}
 .scene>*,.scene form{pointer-events:auto}
-.scene.entrance{justify-content:flex-end;padding-bottom:calc(14vh + env(safe-area-inset-bottom))}
+.scene.entrance{justify-content:flex-end;padding-bottom:calc(12vh + env(safe-area-inset-bottom))}
+@media (max-height:720px){.scene.entrance{padding-bottom:calc(6vh + env(safe-area-inset-bottom))}}
 h1,h2{font-family:var(--disp);font-weight:600;letter-spacing:.14em;line-height:1.3;background:linear-gradient(180deg,#fff6d6,#d4af37 60%,#8a6a14);-webkit-background-clip:text;background-clip:text;color:transparent}
 h1{font-size:clamp(1.4rem,4.6vw,3.2rem);max-width:20ch}
+.scene.entrance h1{font-size:clamp(2.4rem,7.5vw,4.8rem);letter-spacing:.18em;line-height:1.1;margin:.2rem 0;max-width:14ch}
 h2{font-size:clamp(1.1rem,3.6vw,2rem);max-width:24ch}
+.kicker{font-family:var(--disp);font-size:clamp(.72rem,1.8vw,.86rem);letter-spacing:.36em;color:#cfc7b0;text-transform:uppercase;margin-bottom:.5rem}
+.date-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;background:rgba(212,175,55,.08);border:1px solid rgba(212,175,55,.32);border-radius:20px;font-family:var(--disp);font-size:clamp(.76rem,1.8vw,.88rem);letter-spacing:.16em;color:#f6e7ae;text-transform:uppercase;margin:.6rem 0 .3rem;box-shadow:0 0 16px rgba(212,175,55,.12);backdrop-filter:blur(8px)}
+.date-dot{width:6px;height:6px;border-radius:50%;background:#d4af37;box-shadow:0 0 8px #ffd98a}
 .sub{font-size:clamp(1.1rem,2.6vw,1.6rem);font-style:italic;color:#cfc7b0;margin:1rem 0 2rem}
 .btn{font-family:var(--disp);font-size:.82rem;letter-spacing:.3em;color:#f6e7ae;background:transparent;border:1px solid rgba(212,175,55,.7);padding:1rem 1.8rem;cursor:pointer;transition:box-shadow .4s,background .4s,letter-spacing .4s,border-color .4s;display:inline-flex;gap:.6rem;align-items:center;min-height:48px}
 .btn:hover{background:rgba(212,175,55,.09);border-color:#f6e7ae;box-shadow:0 0 28px rgba(212,175,55,.45),inset 0 0 18px rgba(212,175,55,.15);letter-spacing:.36em}

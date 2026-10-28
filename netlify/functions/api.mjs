@@ -65,7 +65,7 @@ export default async (req, context) => {
         return new Response(visitorsToCsv(visitors), {
           headers: {
             'Content-Type': 'text/csv; charset=utf-8',
-            'Content-Disposition': 'attachment; filename="secret_premiere_invitation_visitors.csv"',
+            'Content-Disposition': 'attachment; filename="nexora_invitation_visitors.csv"',
             'Cache-Control': 'no-store'
           }
         })

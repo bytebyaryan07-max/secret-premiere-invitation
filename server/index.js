@@ -91,7 +91,7 @@ app.get('/api/admin/export', requireAdmin, async (req, res) => {
   try {
     const visitors = await getRecentVisitors(getPool(), 10000)
     res.setHeader('Content-Type', 'text/csv; charset=utf-8')
-    res.setHeader('Content-Disposition', 'attachment; filename="secret_premiere_invitation_visitors.csv"')
+    res.setHeader('Content-Disposition', 'attachment; filename="nexora_invitation_visitors.csv"')
     res.status(200).send(visitorsToCsv(visitors))
   } catch (err) {
     console.error('Error exporting CSV:', err.message)
