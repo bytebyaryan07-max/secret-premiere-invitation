@@ -1,18 +1,25 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import gsap from 'gsap'
-import { Volume2, VolumeX, Download, BarChart2 } from 'lucide-react'
+import { Download } from 'lucide-react'
 import Stage from './components/Stage'
 import Entrance from './scenes/Entrance'
 import NameEntry from './scenes/NameEntry'
 import NameReveal from './scenes/NameReveal'
 import DashboardPanel from './components/DashboardPanel'
+import HalloweenHeader from './components/HalloweenHeader'
+import HalloweenAtmosphere from './components/HalloweenAtmosphere'
 import { EVENT } from './config/event'
 import { drawFront, loadFonts } from './lib/drawInvitation'
 import { chime } from './lib/sound'
 import { trackVisit, trackSave } from './lib/api'
 
 const hasWebGL = () => {
-  try { const c = document.createElement('canvas'); return !!(c.getContext('webgl2') || c.getContext('webgl')) } catch { return false }
+  try {
+    const c = document.createElement('canvas')
+    return !!(c.getContext('webgl2') || c.getContext('webgl'))
+  } catch {
+    return false
+  }
 }
 
 const checkIsDashboardRoute = () => {
@@ -39,6 +46,7 @@ export default function App() {
   const [skipKey, setSkipKey] = useState(0)
   const [sound, setSound] = useState(true)
   const [fallbackImg, setFallbackImg] = useState('')
+
   const veil = useRef(), soundRef = useRef(false)
   const webgl = useMemo(hasWebGL, [])
   soundRef.current = sound
@@ -66,8 +74,11 @@ export default function App() {
     }
   }
 
-  useEffect(() => { // respect reduced motion: make every GSAP animation near-instant
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) gsap.globalTimeline.timeScale(8)
+  useEffect(() => {
+    // Respect reduced motion
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      gsap.globalTimeline.timeScale(8)
+    }
   }, [])
 
   const go = (next) => {
@@ -77,13 +88,23 @@ export default function App() {
       .to(veil.current, { opacity: 0, duration: 0.9, ease: 'power2.out' })
   }
 
-  const onRevealed = () => { setRevealed(true); ping([523.25, 659.25, 783.99, 1046.5]) }
+  const onRevealed = () => {
+    setRevealed(true)
+    ping([349.23, 440.00, 523.25, 698.46])
+  }
 
-  useEffect(() => { // no-WebGL fallback: render the same card as a flat image
+  useEffect(() => {
+    // No-WebGL fallback: render the same card as a flat image
     if (scene !== 'invitation' || webgl) return
     let live = true
-    const make = () => { const c = document.createElement('canvas'); drawFront(c, name, 900); if (live) setFallbackImg(c.toDataURL('image/png')) }
-    make(); loadFonts().then(make); setRevealed(true)
+    const make = () => {
+      const c = document.createElement('canvas')
+      drawFront(c, name || EVENT.fallbackGuestName, 1000)
+      if (live) setFallbackImg(c.toDataURL('image/png'))
+    }
+    make()
+    loadFonts().then(make)
+    setRevealed(true)
     return () => { live = false }
   }, [scene, webgl, name])
 
@@ -97,20 +118,22 @@ export default function App() {
 
   const download = async () => {
     // Record download/save action in PostgreSQL
-    trackSave(visitId, name)
+    trackSave(visitId, name || EVENT.fallbackGuestName)
 
     await loadFonts()
-    const c = document.createElement('canvas'); drawFront(c, name, 1200)
+    const c = document.createElement('canvas')
+    drawFront(c, name || EVENT.fallbackGuestName, 1400)
     c.toBlob((b) => {
-      const a = document.createElement('a'); a.href = URL.createObjectURL(b)
+      const a = document.createElement('a')
+      a.href = URL.createObjectURL(b)
       const safeName = (name || 'guest').toLowerCase().replace(/[^a-z0-9]+/g, '-')
-      a.download = `nexora-invitation-${safeName}.png`
+      a.download = `nexora-halloween-invitation-${safeName}.png`
       a.click()
       setTimeout(() => URL.revokeObjectURL(a.href), 1000)
     })
   }
 
-  // If viewing the Dashboard Panel
+  // If viewing the Organizer Dashboard Panel
   if (view === 'dashboard') {
     return <DashboardPanel onBack={() => navigateTo('invitation')} />
   }
@@ -119,41 +142,73 @@ export default function App() {
 
   return (
     <>
-      {webgl ? <Stage scene={scene} mode={mode} name={name || EVENT.fallbackGuestName} runKey={runKey} skipKey={skipKey} onRevealed={onRevealed} />
-        : <div className="fallback-bg" />}
+      {/* 3D WebGL Scene or Fallback Background */}
+      {webgl ? (
+        <Stage
+          scene={scene}
+          mode={mode}
+          name={name || EVENT.fallbackGuestName}
+          runKey={runKey}
+          skipKey={skipKey}
+          onRevealed={onRevealed}
+        />
+      ) : (
+        <div className="fallback-bg" />
+      )}
 
-      {scene === 'entrance' && <Entrance onBegin={() => { ping(); go('name') }} />}
+      {/* Background Halloween Atmosphere positioned safely behind card */}
+      <HalloweenAtmosphere scene={scene} />
+
+      {/* Top Halloween Navigation Header */}
+      <HalloweenHeader
+        sound={sound}
+        onToggleSound={() => setSound((s) => { if (!s) chime([440.00]); return !s })}
+        onOpenDashboard={() => navigateTo('dashboard')}
+        scene={scene}
+      />
+
+      {/* Scene Transitions */}
+      {scene === 'entrance' && (
+        <Entrance onBegin={() => { ping(); go('name') }} />
+      )}
+
       {scene === 'name' && <NameEntry onSubmit={onNameSubmit} />}
-      {scene === 'reveal' && <NameReveal name={name} onDone={() => go('invitation')} />}
 
-      {scene === 'invitation' && !webgl && fallbackImg && <img className="fallback-card" src={fallbackImg} alt={`Invitation for ${name}`} />}
+      {scene === 'reveal' && (
+        <NameReveal name={name || EVENT.fallbackGuestName} onDone={() => go('invitation')} />
+      )}
+
+      {scene === 'invitation' && !webgl && fallbackImg && (
+        <img
+          className="fallback-card"
+          src={fallbackImg}
+          alt={`Halloween Premiere Invitation for ${name || EVENT.fallbackGuestName}`}
+        />
+      )}
+
       {scene === 'invitation' && (
         <div className="sr">
-          <h2>{EVENT.heading}</h2><p>{name}</p><p>{EVENT.name}</p><p>{EVENT.tagline} {EVENT.audience}</p>
-          <p>Date: {EVENT.date}. Time: {EVENT.time}. Venue: {EVENT.venue}.</p><p>{EVENT.closing.join(' ')}</p>
+          <h2>{EVENT.heading}</h2>
+          <p>Prepared for: {name || EVENT.fallbackGuestName}</p>
+          <p>Event: {EVENT.name}</p>
+          <p>{EVENT.tagline} {EVENT.audience}</p>
+          <p>Date: {EVENT.displayDate} ({EVENT.date}). Time: {EVENT.time}. Venue: {EVENT.venue}.</p>
+          <p>{EVENT.closing.join(' ')}</p>
         </div>
       )}
 
-      {/* Sound toggle */}
-      <button className="icon top" onClick={() => { setSound((s) => { if (!s) chime([659.25]); return !s }) }}
-        aria-pressed={sound} aria-label={sound ? 'Turn sound off' : 'Turn sound on'}>
-        {sound ? <Volume2 size={18} /> : <VolumeX size={18} />}
-      </button>
-
-      {/* Discreet Organizer Dashboard Access */}
-      <button
-        className="dashboard-launch-btn"
-        onClick={() => navigateTo('dashboard')}
-        title="Open Organizer Analytics & Visitor Dashboard"
-        aria-label="Organizer Dashboard"
-      >
-        <BarChart2 size={14} />
-        <span>Dashboard</span>
-      </button>
-
+      {/* Toolbar on invitation revealed */}
       {scene === 'invitation' && revealed && (
         <div className="toolbar">
-          <button className="btn small" onClick={download}><Download size={14} /> SAVE</button>
+          <button
+            className="btn small primary-cta hw-cta-button"
+            onClick={download}
+            title="Save your personalized invitation card as a high-resolution PNG"
+          >
+            <Download size={15} />
+            <span className="hw-cta-text">SAVE INVITATION</span>
+            <span aria-hidden="true">🎃</span>
+          </button>
         </div>
       )}
 

@@ -277,8 +277,8 @@ export default function DashboardPanel({ onBack }) {
             <Lock size={26} className="dp-gold-icon" />
           </div>
           <div className="dp-auth-header">
-            <h2>Organizer Access</h2>
-            <p className="dp-auth-desc">Enter the password to view NEXORA guest analytics and visitor tracking.</p>
+            <h2>🦇 Organizer Access 🎃</h2>
+            <p className="dp-auth-desc">Enter the password to unseal NEXORA guest analytics and visitor tracking.</p>
           </div>
 
           <form onSubmit={handleUnlock} className="dp-auth-form">
@@ -305,7 +305,7 @@ export default function DashboardPanel({ onBack }) {
               </div>
             )}
 
-            <button type="submit" className="dp-btn dp-btn-primary dp-btn-full" disabled={submitting}>
+            <button type="submit" className="dp-btn dp-btn-primary dp-btn-full hw-cta-button" disabled={submitting}>
               {submitting ? (
                 <>
                   <RefreshCw size={15} className="dp-spin" />
@@ -314,7 +314,7 @@ export default function DashboardPanel({ onBack }) {
               ) : (
                 <>
                   <ShieldCheck size={16} />
-                  <span>Unlock Dashboard</span>
+                  <span>Unlock Dashboard 🗝️</span>
                 </>
               )}
             </button>
@@ -346,7 +346,7 @@ export default function DashboardPanel({ onBack }) {
           <div className="dp-title-block">
             <div className="dp-brand">
               <Sparkles size={18} className="dp-gold-icon" />
-              <h1>Organizer Dashboard</h1>
+              <h1>🦇 Organizer Dashboard 🎃</h1>
             </div>
             <p className="dp-subtitle">Real-time Guest Tracker & Invitation Analytics • NEXORA</p>
           </div>
