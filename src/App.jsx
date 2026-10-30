@@ -206,9 +206,10 @@ export default function App() {
             onClick={download}
             title="Save your personalized invitation card as a high-resolution PNG"
           >
-            <Download size={15} />
+            <span className="hw-cta-glow" aria-hidden="true" />
+            <Download size={16} className="hw-cta-icon" />
             <span className="hw-cta-text">SAVE INVITATION</span>
-            <span aria-hidden="true">🎃</span>
+            <span className="hw-cta-pumpkin" aria-hidden="true">🎃</span>
           </button>
         </div>
       )}

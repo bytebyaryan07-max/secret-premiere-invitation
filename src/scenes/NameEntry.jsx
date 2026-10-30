@@ -1,5 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react"
 import gsap from "gsap"
+import { ArrowRight } from "lucide-react"
 import { EVENT } from "../config/event"
 
 export default function NameEntry({ onSubmit }) {
@@ -74,45 +75,11 @@ export default function NameEntry({ onSubmit }) {
             type="submit"
             className="btn cta hw-cta-button enter-shadows-btn"
             aria-label="Enter the shadows"
-            style={{
-              background: '#E87519',
-              color: '#19091F',
-              border: '2px solid #D9A441',
-              minHeight: '48px',
-              padding: '0 24px',
-              display: 'inline-flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              position: 'relative',
-              zIndex: 10,
-              marginTop: '24px',
-              marginLeft: 'auto',
-              marginRight: 'auto',
-              fontFamily: "var(--heading), 'Cinzel', serif",
-              fontSize: '1rem',
-              fontWeight: 800,
-              letterSpacing: '0.14em',
-              textTransform: 'uppercase',
-              textDecoration: 'none',
-              borderRadius: '6px',
-              cursor: 'pointer',
-              boxShadow: '0 4px 18px rgba(232, 117, 25, 0.5), 0 0 16px rgba(217, 164, 65, 0.35)',
-              opacity: 1,
-              visibility: 'visible',
-            }}
           >
-            <span
-              className="enter-shadows-label"
-              style={{
-                color: '#19091F',
-                fontWeight: 800,
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '8px',
-              }}
-            >
-              ENTER THE SHADOWS 🎃
-            </span>
+            <span className="hw-cta-glow" aria-hidden="true" />
+            <span className="hw-cta-text">ENTER THE SHADOWS</span>
+            <span className="hw-cta-pumpkin" aria-hidden="true">🎃</span>
+            <ArrowRight size={17} className="hw-cta-arrow" />
           </button>
         </form>
       </div>
