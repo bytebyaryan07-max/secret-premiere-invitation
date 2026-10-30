@@ -1,6 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react"
 import gsap from "gsap"
-import { Sparkles, Key, ArrowRight } from "lucide-react"
 import { EVENT } from "../config/event"
 
 export default function NameEntry({ onSubmit }) {
@@ -14,6 +13,12 @@ export default function NameEntry({ onSubmit }) {
       gsap.timeline({ delay: 0.3 })
         .from(".hw-form-card", { opacity: 0, y: 24, scale: 0.96, duration: 1.2, ease: "power3.out" })
         .from(".fade", { opacity: 0, y: 16, duration: 1.0, stagger: 0.16, ease: "power2.out" }, "-=0.8")
+        .fromTo(
+          ".enter-shadows-btn",
+          { opacity: 0, y: 14, scale: 0.96 },
+          { opacity: 1, y: 0, scale: 1, duration: 0.8, ease: "power2.out", clearProps: "opacity,transform" },
+          "-=0.4"
+        )
     }, root)
     return () => c.revert()
   }, [])
@@ -28,7 +33,7 @@ export default function NameEntry({ onSubmit }) {
     const n = v.trim().replace(/\s+/g, " ")
     if (!n) {
       setErr("Please reveal your name to claim your invitation.")
-      inp.current.focus()
+      inp.current?.focus()
       return
     }
     onSubmit(n)
@@ -71,11 +76,12 @@ export default function NameEntry({ onSubmit }) {
 
           <p className="err" role="alert">{err}</p>
 
-          <button type="submit" className="btn fade cta hw-cta-button">
-            <span className="hw-cta-glow" aria-hidden="true" />
-            <span className="hw-cta-text">UNSEAL MY INVITATION</span>
-            <span className="hw-cta-pumpkin" aria-hidden="true">🎃</span>
-            <ArrowRight size={16} />
+          <button
+            type="submit"
+            className="btn cta hw-cta-button enter-shadows-btn"
+            aria-label="Enter the shadows"
+          >
+            <span className="enter-shadows-label">ENTER THE SHADOWS 🎃</span>
           </button>
         </form>
       </div>
