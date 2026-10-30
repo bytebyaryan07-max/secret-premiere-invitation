@@ -214,7 +214,13 @@ function Card({ scene, name, runKey, skipKey, onRevealed }) {
   const tilt = useRef(), flip = useRef(), light = useRef(), tl = useRef(), cb = useRef(onRevealed)
   cb.current = onRevealed
   const v = useThree((s) => s.viewport)
-  const fit = Math.min(1, v.width / 3.6, v.height / 5.8)
+  const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768
+  const isSmallMobile = typeof window !== 'undefined' && window.innerWidth <= 480
+  const fit = Math.min(
+    1,
+    v.width / (isSmallMobile ? 3.8 : isMobile ? 3.65 : 3.6),
+    v.height / (isSmallMobile ? 6.8 : isMobile ? 6.2 : 5.8)
+  )
 
   const res = useMemo(() => {
     const fc = document.createElement("canvas"), bc = document.createElement("canvas")
@@ -287,9 +293,10 @@ function Card({ scene, name, runKey, skipKey, onRevealed }) {
 
   useFrame(({ pointer, clock }, dt) => {
     const k = Math.min(1, dt * 3)
-    tilt.current.rotation.y += (pointer.x * 0.3 - tilt.current.rotation.y) * k
-    tilt.current.rotation.x += (-pointer.y * 0.2 - tilt.current.rotation.x) * k
-    tilt.current.position.y = Math.sin(clock.elapsedTime * 0.9) * 0.04
+    const factor = isSmallMobile ? 0.16 : isMobile ? 0.22 : 0.3
+    tilt.current.rotation.y += (pointer.x * factor - tilt.current.rotation.y) * k
+    tilt.current.rotation.x += (-pointer.y * (factor * 0.7) - tilt.current.rotation.x) * k
+    tilt.current.position.y = Math.sin(clock.elapsedTime * 0.9) * (isMobile ? 0.02 : 0.04)
   })
 
   return (
