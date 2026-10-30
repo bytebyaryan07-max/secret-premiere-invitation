@@ -180,7 +180,7 @@ export async function checkDatabase(pool) {
  * Returns 'ok', 'unauthorized', or 'not_configured'.
  */
 export function checkAdminKey(provided) {
-  const expected = process.env.ADMIN_KEY || '12341234'
+  const expected = process.env.ADMIN_KEY || '1234admin'
   if (!provided) return 'unauthorized'
   const a = createHash('sha256').update(String(provided)).digest()
   const b = createHash('sha256').update(expected).digest()
