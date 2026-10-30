@@ -286,7 +286,7 @@ export default function DashboardPanel({ onBack }) {
               <Key size={16} className="dp-auth-icon" />
               <input
                 type="password"
-                placeholder="Enter password (12341234)"
+                placeholder="Enter password"
                 value={passwordInput}
                 onChange={(e) => {
                   setPasswordInput(e.target.value)
