@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react"
 import gsap from "gsap"
-import { Sparkles, Key, ArrowRight } from "lucide-react"
+import { ArrowRight } from "lucide-react"
 import { EVENT } from "../config/event"
 
 export default function NameEntry({ onSubmit }) {
@@ -11,9 +11,9 @@ export default function NameEntry({ onSubmit }) {
 
   useLayoutEffect(() => {
     const c = gsap.context(() => {
-      gsap.timeline({ delay: 0.3 })
-        .from(".hw-form-card", { opacity: 0, y: 24, scale: 0.96, duration: 1.2, ease: "power3.out" })
-        .from(".fade", { opacity: 0, y: 16, duration: 1.0, stagger: 0.16, ease: "power2.out" }, "-=0.8")
+      gsap.timeline({ delay: 0.2 })
+        .from(".hw-form-card", { opacity: 0, y: 20, scale: 0.97, duration: 0.9, ease: "power3.out" })
+        .from(".fade", { opacity: 0, y: 12, duration: 0.8, stagger: 0.12, ease: "power2.out" }, "-=0.6")
     }, root)
     return () => c.revert()
   }, [])
@@ -28,7 +28,7 @@ export default function NameEntry({ onSubmit }) {
     const n = v.trim().replace(/\s+/g, " ")
     if (!n) {
       setErr("Please reveal your name to claim your invitation.")
-      inp.current.focus()
+      inp.current?.focus()
       return
     }
     onSubmit(n)
@@ -71,11 +71,15 @@ export default function NameEntry({ onSubmit }) {
 
           <p className="err" role="alert">{err}</p>
 
-          <button type="submit" className="btn fade cta hw-cta-button">
+          <button
+            type="submit"
+            className="btn cta hw-cta-button enter-shadows-btn"
+            aria-label="Enter the shadows"
+          >
             <span className="hw-cta-glow" aria-hidden="true" />
-            <span className="hw-cta-text">UNSEAL MY INVITATION</span>
+            <span className="hw-cta-text">ENTER THE SHADOWS</span>
             <span className="hw-cta-pumpkin" aria-hidden="true">🎃</span>
-            <ArrowRight size={16} />
+            <ArrowRight size={17} className="hw-cta-arrow" />
           </button>
         </form>
       </div>

@@ -1,6 +1,6 @@
 import { useLayoutEffect, useRef } from "react"
 import gsap from "gsap"
-import { Calendar, Clock, MapPin, ArrowRight, Sparkles } from "lucide-react"
+import { ArrowRight } from "lucide-react"
 import { EVENT } from "../config/event"
 
 export default function Entrance({ onBegin }) {
@@ -10,9 +10,9 @@ export default function Entrance({ onBegin }) {
     const c = gsap.context(() => {
       gsap.timeline({ delay: 0.3 })
         .from(".hero-halo", { opacity: 0, scale: 0.7, duration: 1.8, ease: "power2.out" })
-        .from(".kicker", { opacity: 0, y: 16, letterSpacing: "0.5em", duration: 1.2, ease: "power2.out" }, "-=1.4")
+        .from(".kicker-presenter", { opacity: 0, y: 12, duration: 1.0, ease: "power2.out" }, "-=1.5")
+        .from(".kicker", { opacity: 0, y: 16, letterSpacing: "0.5em", duration: 1.2, ease: "power2.out" }, "-=1.2")
         .from(".l1", { opacity: 0, y: 26, scale: 0.92, duration: 1.5, ease: "power3.out" }, "-=1.0")
-        .from(".event-pills-row", { opacity: 0, y: 16, duration: 1.1, ease: "power2.out" }, "-=0.9")
         .from(".sub", { opacity: 0, y: 14, duration: 1.1, ease: "power2.out" }, "-=0.8")
         .from(".hero-actions", { opacity: 0, y: 16, duration: 1.0, ease: "power2.out" }, "-=0.7")
     }, root)
@@ -37,27 +37,6 @@ export default function Entrance({ onBegin }) {
         </p>
 
         <h1 className="l1" data-text={EVENT.name}>{EVENT.name}</h1>
-
-        {/* Event Key Badges: Date, Time, Venue */}
-        <div className="event-pills-row">
-          <div className="event-pill hw-pill-date" title="Event Date: 01 November 2026">
-            <span className="hw-pill-emoji" aria-hidden="true">🎃</span>
-            <Calendar size={13} className="pill-icon text-orange" />
-            <span className="pill-text">{EVENT.displayDate}</span>
-          </div>
-
-          <div className="event-pill hw-pill-time" title="Event Time: 9:00 AM">
-            <span className="hw-pill-emoji" aria-hidden="true">🌙</span>
-            <Clock size={13} className="pill-icon text-amber" />
-            <span className="pill-text">{EVENT.time}</span>
-          </div>
-
-          <div className="event-pill hw-pill-venue" title={`Venue: ${EVENT.venue}`}>
-            <span className="hw-pill-emoji" aria-hidden="true">🏰</span>
-            <MapPin size={13} className="pill-icon text-purple" />
-            <span className="pill-text">{EVENT.venue}</span>
-          </div>
-        </div>
 
         <p className="sub">{EVENT.tagline} {EVENT.audience}</p>
 
