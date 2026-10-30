@@ -1,14 +1,18 @@
-// Nexora Event Configuration
+// Nexora Event Configuration — Secret Halloween Premiere
 export const EVENT = {
+  presenter: "TEAM MAVERICKS",
+  presentsLabel: "PRESENTS",
   name: "NEXORA",
   date: "01 NOVEMBER 2026",
-  displayDate: "1 November 2026",
-  time: "07:00 PM ONWARDS",
-  venue: "SECRET PREMIERE VENUE",
-  heading: "YOU ARE CORDIALLY INVITED",
-  tagline: "An unforgettable experience awaits.",
-  audience: "Exclusively for our beloved seniors.",
-  closing: ["SOME MEMORIES ARE PLANNED.", "OTHERS BECOME LEGENDARY."],
-  fallbackGuestName: "Honored Guest", // used if someone skips before typing a name
+  displayDate: "01 November 2026",
+  time: "9:00 AM",
+  venue: "HIGH ONN BREEZE",
+  heading: "A PRIVATE PREMIERE FOR SENIORS",
+  tagline: "A secret Halloween premiere exclusively for seniors.",
+  audience: "Step into the shadows where legends awaken.",
+  closing: [
+    "SOME MEMORIES ARE PLANNED.",
+    "OTHERS BECOME LEGENDARY IN THE SHADOWS."
+  ],
+  fallbackGuestName: "Honored Senior",
 }
-

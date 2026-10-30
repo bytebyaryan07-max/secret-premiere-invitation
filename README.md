@@ -1,6 +1,6 @@
-# NEXORA — Secret Senior Premiere Invitation
+# NEXORA — Secret Senior Premiere Invitation (Halloween Edition)
 
-An interactive 3D invitation experience for seniors attending **NEXORA** on **01 November 2026**, equipped with PostgreSQL database tracking to see who visited and who saved/downloaded their personalized invitation.
+An interactive, cinematic 3D invitation experience for seniors attending **NEXORA** on **01 November 2026 at 9:00 AM**, equipped with PostgreSQL database tracking to see who visited and who saved/downloaded their personalized invitation.
 
 ## Quick Start
 
