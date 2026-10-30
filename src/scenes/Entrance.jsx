@@ -26,6 +26,10 @@ export default function Entrance({ onBegin }) {
         {/* Glowing Harvest Moon / Mansion Halo Aura behind heading */}
         <div className="hero-halo" aria-hidden="true" />
 
+        <p className="kicker-presenter" style={{ fontFamily: 'var(--heading)', fontSize: 'clamp(0.68rem, 1.5vw, 0.8rem)', letterSpacing: '0.4em', color: 'var(--gold)', textTransform: 'uppercase', marginBottom: '6px', opacity: 0.9 }}>
+          {EVENT.presenter} {EVENT.presentsLabel}
+        </p>
+
         <p className="kicker">
           <span className="kicker-ghost">👻</span>
           <span>A PRIVATE PREMIERE FOR SENIORS</span>
@@ -48,10 +52,10 @@ export default function Entrance({ onBegin }) {
             <span className="pill-text">{EVENT.time}</span>
           </div>
 
-          <div className="event-pill hw-pill-venue" title="Venue: Secret Premiere">
+          <div className="event-pill hw-pill-venue" title={`Venue: ${EVENT.venue}`}>
             <span className="hw-pill-emoji" aria-hidden="true">🏰</span>
             <MapPin size={13} className="pill-icon text-purple" />
-            <span className="pill-text">Secret Premiere</span>
+            <span className="pill-text">{EVENT.venue}</span>
           </div>
         </div>
 

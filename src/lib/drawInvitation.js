@@ -7,7 +7,7 @@ const S = "'Cormorant Garamond', Georgia, serif"
 // Exact specified color palette:
 const COLOR_BG = "#08050B"           // Midnight black (fully opaque)
 const COLOR_TITLE = "#F58A24"        // Pumpkin orange (main title)
-const COLOR_NAME = "#E8C78A"         // Warm gold (visitor name)
+const COLOR_NAME = "#E8C78A"         // Warm gold (visitor name, branding)
 const COLOR_MAIN_TEXT = "#F5EBDD"    // Ivory (main text, details values, closing lines)
 const COLOR_SEC_TEXT = "#C6AD83"     // Muted gold (secondary text, labels, heading, confidentiality)
 const COLOR_BORDER = "#8A3515"       // Dark orange (outer border, decorations)
@@ -224,14 +224,14 @@ const drawDivider = (x, y, halfW = 160, motif = "diamond") => {
   x.beginPath(); x.moveTo(500 + 22, y); x.lineTo(500 + halfW, y); x.stroke()
 
   if (motif === "diamond") {
-    drawDiamond(x, 500, y, 4, COLOR_NAME)
+    drawDiamond(x, 500, y, 3.5, COLOR_NAME)
     drawDiamond(x, 500 - 10, y, 2, COLOR_SEC_TEXT)
     drawDiamond(x, 500 + 10, y, 2, COLOR_SEC_TEXT)
   } else if (motif === "bat") {
     x.fillStyle = COLOR_BORDER
-    drawBat(x, 500, y, 0.36)
-    drawDiamond(x, 500 - 28, y, 2.5, COLOR_NAME)
-    drawDiamond(x, 500 + 28, y, 2.5, COLOR_NAME)
+    drawBat(x, 500, y, 0.34)
+    drawDiamond(x, 500 - 26, y, 2.5, COLOR_NAME)
+    drawDiamond(x, 500 + 26, y, 2.5, COLOR_NAME)
   }
   x.restore()
 }
@@ -306,43 +306,65 @@ export function drawFront(canvas, name, w = 1000) {
   frame(x, 1000, 1350)
 
   // 2. Top Decorative Crest: Small carved pumpkin flanked by subtle bats
-  drawJackOLantern(x, 500, 116, 22)
+  drawJackOLantern(x, 500, 100, 18)
   x.fillStyle = COLOR_BORDER
-  drawBat(x, 415, 116, 0.42)
-  drawBat(x, 585, 116, -0.42) // flipped horizontally
+  drawBat(x, 424, 100, 0.38)
+  drawBat(x, 576, 100, -0.38) // flipped horizontally
 
-  // 3. Small Heading (1): A PRIVATE PREMIERE FOR SENIORS in Muted Gold (#C6AD83)
+  // 3. TEAM MAVERICKS PRESENTS (at the very top, above "A PRIVATE PREMIERE FOR SENIORS")
+  // Team Mavericks in elegant uppercase gold typography
+  x.save()
+  const presenterGrad = x.createLinearGradient(0, 130, 0, 155)
+  presenterGrad.addColorStop(0, "#FFF4DD")
+  presenterGrad.addColorStop(0.5, COLOR_NAME)
+  presenterGrad.addColorStop(1, "#BE9755")
+  x.fillStyle = presenterGrad
+  x.letterSpacing = "6px"
+  x.font = `700 23px ${C}`
+  x.fillText(EVENT.presenter || "TEAM MAVERICKS", 503, 145)
+  x.restore()
+
+  // PRESENTS directly underneath in smaller lettering
+  x.letterSpacing = "6px"
+  x.fillStyle = COLOR_SEC_TEXT
+  x.font = `italic 500 15px ${S}`
+  x.fillText(EVENT.presentsLabel || "PRESENTS", 502, 175)
+
+  // Subtle decorative divider with tiny center bat motif
+  drawDivider(x, 202, 130, "bat")
+
+  // 4. Heading: A PRIVATE PREMIERE FOR SENIORS in Muted Gold (#C6AD83)
   x.letterSpacing = "5px"
   x.fillStyle = COLOR_SEC_TEXT
-  x.font = `700 20px ${C}`
-  x.fillText(EVENT.heading || "A PRIVATE PREMIERE FOR SENIORS", 502, 180)
+  x.font = `700 18px ${C}`
+  x.fillText(EVENT.heading || "A PRIVATE PREMIERE FOR SENIORS", 502, 240)
 
-  // 4. Supporting Label (2): PREPARED EXCLUSIVELY FOR in Muted Gold (#C6AD83)
+  // 5. Supporting Label: PREPARED EXCLUSIVELY FOR in Muted Gold (#C6AD83)
   x.letterSpacing = "4px"
   x.fillStyle = COLOR_SEC_TEXT
-  x.font = `600 16px ${C}`
-  x.fillText("PREPARED EXCLUSIVELY FOR", 502, 234)
+  x.font = `600 15px ${C}`
+  x.fillText("PREPARED EXCLUSIVELY FOR", 502, 286)
 
-  // 5. Visitor's Personalized Name (3): Elegant warm gold serif typography (#E8C78A)
+  // 6. Visitor's Personalized Name: Elegant warm gold serif typography (#E8C78A)
   // Prominent, slightly smaller than NEXORA, with subtle gold gradient depth
   x.save()
-  const nameGrad = x.createLinearGradient(0, 270, 0, 315)
+  const nameGrad = x.createLinearGradient(0, 310, 0, 355)
   nameGrad.addColorStop(0, "#FFF4DD")
   nameGrad.addColorStop(0.5, COLOR_NAME)
   nameGrad.addColorStop(1, "#BE9755")
   x.fillStyle = nameGrad
   x.letterSpacing = "3px"
-  fit(x, name.toUpperCase(), 760, 56, 700, D)
-  x.fillText(name.toUpperCase(), 500, 308)
+  fit(x, name.toUpperCase(), 760, 54, 700, D)
+  x.fillText(name.toUpperCase(), 500, 352)
   x.restore()
 
-  // 6. Ornamental Divider with center bat motif
-  drawDivider(x, 354, 210, "bat")
+  // 7. Ornamental Divider with center bat motif
+  drawDivider(x, 394, 200, "bat")
 
-  // 7. Large, Prominent Event Title (4): NEXORA
+  // 8. Large, Prominent Event Title: NEXORA
   // Main visual attraction with elegant cinematic serif and subtle orange gradient
   x.save()
-  const titleGrad = x.createLinearGradient(0, 380, 0, 460)
+  const titleGrad = x.createLinearGradient(0, 410, 0, 490)
   titleGrad.addColorStop(0, "#FFAE4A")
   titleGrad.addColorStop(0.5, COLOR_TITLE)
   titleGrad.addColorStop(1, "#CF5708")
@@ -352,97 +374,97 @@ export function drawFront(canvas, name, w = 1000) {
   x.shadowColor = "rgba(255, 157, 50, 0.42)"
   x.shadowBlur = 14
   x.letterSpacing = "8px"
-  fit(x, EVENT.name || "NEXORA", 800, 90, 900, D)
-  x.fillText(EVENT.name || "NEXORA", 504, 448)
+  fit(x, EVENT.name || "NEXORA", 800, 88, 900, D)
+  x.fillText(EVENT.name || "NEXORA", 504, 480)
   x.restore()
 
-  // 8. Event Taglines (5): Crisp, enlarged Ivory (#F5EBDD) for high readability
+  // 9. Event Taglines: Crisp Ivory (#F5EBDD) for high readability
   x.letterSpacing = "0.8px"
   x.fillStyle = COLOR_MAIN_TEXT
-  x.font = `italic 500 29px ${S}`
-  x.fillText(EVENT.tagline || "A secret Halloween premiere exclusively for seniors.", 500, 510)
+  x.font = `italic 500 28px ${S}`
+  x.fillText(EVENT.tagline || "A secret Halloween premiere exclusively for seniors.", 500, 538)
 
   x.letterSpacing = "1.2px"
   x.fillStyle = "#EAE0D3"
-  x.font = `500 23px ${S}`
-  x.fillText(EVENT.audience || "Step into the shadows where legends awaken.", 500, 554)
+  x.font = `500 22px ${S}`
+  x.fillText(EVENT.audience || "Step into the shadows where legends awaken.", 500, 578)
 
-  // 9. Ornamental Divider before Event Details
-  drawDivider(x, 594, 180, "diamond")
+  // 10. Ornamental Divider before Event Details
+  drawDivider(x, 614, 180, "diamond")
 
-  // 10. Refined Event Details (6): Clean, balanced section with consistent spacing
+  // 11. Refined Event Details: Clean, balanced section with consistent spacing
   // DATE: 01 NOVEMBER 2026
   x.letterSpacing = "5px"
   x.fillStyle = COLOR_SEC_TEXT
   x.font = `700 15px ${C}`
-  x.fillText("DATE", 502, 636)
+  x.fillText("DATE", 502, 650)
 
   x.letterSpacing = "2px"
   x.fillStyle = COLOR_MAIN_TEXT
-  fit(x, EVENT.date || "01 NOVEMBER 2026", 760, 33, 700, C)
-  x.fillText(EVENT.date || "01 NOVEMBER 2026", 500, 678)
+  fit(x, EVENT.date || "01 NOVEMBER 2026", 760, 32, 700, C)
+  x.fillText(EVENT.date || "01 NOVEMBER 2026", 500, 690)
 
   // Separator
-  drawDivider(x, 714, 140, "diamond")
+  drawDivider(x, 724, 130, "diamond")
 
   // TIME: 9:00 AM
   x.letterSpacing = "5px"
   x.fillStyle = COLOR_SEC_TEXT
   x.font = `700 15px ${C}`
-  x.fillText("TIME", 502, 746)
+  x.fillText("TIME", 502, 754)
 
   x.letterSpacing = "2px"
   x.fillStyle = COLOR_MAIN_TEXT
-  fit(x, EVENT.time || "9:00 AM", 760, 33, 700, C)
-  x.fillText(EVENT.time || "9:00 AM", 500, 788)
+  fit(x, EVENT.time || "9:00 AM", 760, 32, 700, C)
+  x.fillText(EVENT.time || "9:00 AM", 500, 794)
 
   // Separator
-  drawDivider(x, 824, 140, "diamond")
+  drawDivider(x, 828, 130, "diamond")
 
-  // VENUE: SECRET PREMIERE VENUE
+  // VENUE: HIGH ONN BREEZE
   x.letterSpacing = "5px"
   x.fillStyle = COLOR_SEC_TEXT
   x.font = `700 15px ${C}`
-  x.fillText("VENUE", 502, 856)
+  x.fillText("VENUE", 502, 858)
 
   x.letterSpacing = "2px"
   x.fillStyle = COLOR_MAIN_TEXT
-  fit(x, EVENT.venue || "SECRET PREMIERE VENUE", 760, 29, 700, C)
-  x.fillText(EVENT.venue || "SECRET PREMIERE VENUE", 500, 898)
+  fit(x, EVENT.venue || "HIGH ONN BREEZE", 760, 30, 700, C)
+  x.fillText(EVENT.venue || "HIGH ONN BREEZE", 500, 898)
 
-  // 11. Ornamental Divider before Closing Message
-  drawDivider(x, 946, 200, "diamond")
+  // 12. Ornamental Divider before Closing Message
+  drawDivider(x, 942, 200, "diamond")
 
-  // 12. Closing Message (7): Readable, properly aligned, evenly spaced in Ivory (#F5EBDD)
+  // 13. Closing Message: Readable, properly aligned, evenly spaced in Ivory (#F5EBDD)
   x.letterSpacing = "4px"
   x.fillStyle = COLOR_MAIN_TEXT
-  x.font = `600 21px ${C}`
+  x.font = `600 20px ${C}`
   const closingLines = EVENT.closing || [
     "SOME MEMORIES ARE PLANNED.",
     "OTHERS BECOME LEGENDARY IN THE SHADOWS."
   ]
-  x.fillText(closingLines[0], 502, 996)
-  x.fillText(closingLines[1], 502, 1038)
+  x.fillText(closingLines[0], 502, 988)
+  x.fillText(closingLines[1], 502, 1028)
 
-  // 13. Delicate Divider before Confidentiality Footer
-  drawDivider(x, 1078, 160, "diamond")
+  // 14. Delicate Divider before Confidentiality Footer
+  drawDivider(x, 1066, 150, "diamond")
 
-  // 14. Confidentiality Footer: Smaller but crisp and legible in Muted Gold (#C6AD83)
+  // 15. Confidentiality Footer: Smaller but crisp and legible in Muted Gold (#C6AD83)
   x.letterSpacing = "4.5px"
   x.fillStyle = COLOR_SEC_TEXT
-  x.font = `600 16px ${C}`
-  x.fillText("BY INVITATION ONLY · ADMIT ONE · STRICTLY CONFIDENTIAL", 502, 1126)
+  x.font = `600 15px ${C}`
+  x.fillText("BY INVITATION ONLY · ADMIT ONE · STRICTLY CONFIDENTIAL", 502, 1110)
 
-  // 15. Bottom Mini Pumpkin Seal & Gothic Terminal
-  drawJackOLantern(x, 500, 1196, 18)
+  // 16. Bottom Mini Pumpkin Seal & Gothic Terminal
+  drawJackOLantern(x, 500, 1180, 18)
 
   // Flanking horizontal flourish lines
   x.strokeStyle = "rgba(198, 173, 131, 0.45)"
   x.lineWidth = 1
-  x.beginPath(); x.moveTo(370, 1196); x.lineTo(462, 1196); x.stroke()
-  x.beginPath(); x.moveTo(538, 1196); x.lineTo(630, 1196); x.stroke()
-  drawDiamond(x, 370, 1196, 3, COLOR_NAME)
-  drawDiamond(x, 630, 1196, 3, COLOR_NAME)
+  x.beginPath(); x.moveTo(370, 1180); x.lineTo(462, 1180); x.stroke()
+  x.beginPath(); x.moveTo(538, 1180); x.lineTo(630, 1180); x.stroke()
+  drawDiamond(x, 370, 1180, 3, COLOR_NAME)
+  drawDiamond(x, 630, 1180, 3, COLOR_NAME)
 }
 
 export function drawBack(canvas) {
@@ -458,41 +480,57 @@ export function drawBack(canvas) {
   ;[190, 160, 130].forEach((r, i) => {
     x.lineWidth = i === 0 ? 3 : 1.4
     x.strokeStyle = i === 1 ? "rgba(198, 173, 131, 0.6)" : COLOR_BORDER
-    x.beginPath(); x.arc(500, 620, r, 0, Math.PI * 2); x.stroke()
+    x.beginPath(); x.arc(500, 660, r, 0, Math.PI * 2); x.stroke()
   })
 
   // Subtle bats flanking the center
   x.fillStyle = COLOR_BORDER
-  drawBat(x, 440, 560, 0.48)
-  drawBat(x, 560, 600, 0.42)
-  drawBat(x, 430, 650, 0.36)
+  drawBat(x, 440, 600, 0.48)
+  drawBat(x, 560, 640, 0.42)
+  drawBat(x, 430, 690, 0.36)
 
   // Central Jack-o'-lantern crest
-  drawJackOLantern(x, 500, 620, 36)
+  drawJackOLantern(x, 500, 660, 36)
+
+  // Team Mavericks presents on back
+  x.letterSpacing = "6px"
+  x.font = `700 18px ${C}`
+  x.fillStyle = COLOR_NAME
+  x.fillText(EVENT.presenter || "TEAM MAVERICKS", 503, 310)
+
+  x.letterSpacing = "5px"
+  x.font = `italic 500 13px ${S}`
+  x.fillStyle = COLOR_SEC_TEXT
+  x.fillText(EVENT.presentsLabel || "PRESENTS", 502, 332)
 
   // Event Title in pumpkin orange gradient
-  const titleGrad = x.createLinearGradient(0, 320, 0, 380)
+  const titleGrad = x.createLinearGradient(0, 350, 0, 410)
   titleGrad.addColorStop(0, "#FFAE4A")
   titleGrad.addColorStop(1, COLOR_TITLE)
   x.fillStyle = titleGrad
   x.letterSpacing = "12px"
-  x.font = `900 44px ${D}`
-  x.fillText(EVENT.name || "NEXORA", 506, 370)
+  x.font = `900 42px ${D}`
+  x.fillText(EVENT.name || "NEXORA", 506, 395)
 
-  // Date & Time in bold Ivory (#F5EBDD)
-  x.letterSpacing = "6px"
-  x.font = `700 24px ${C}`
+  // Date, Time & Venue in bold Ivory (#F5EBDD)
+  x.letterSpacing = "5px"
+  x.font = `700 20px ${C}`
   x.fillStyle = COLOR_MAIN_TEXT
-  x.fillText("01 NOVEMBER 2026 • 9:00 AM", 503, 430)
+  x.fillText("01 NOVEMBER 2026 • 9:00 AM", 503, 445)
+
+  x.letterSpacing = "4px"
+  x.font = `700 18px ${C}`
+  x.fillStyle = COLOR_NAME
+  x.fillText(EVENT.venue || "HIGH ONN BREEZE", 502, 480)
 
   // Taglines in Muted Gold (#C6AD83) and Ivory (#F5EBDD)
   x.fillStyle = COLOR_SEC_TEXT
   x.letterSpacing = "7px"
-  x.font = `700 24px ${C}`
-  x.fillText("ENTER IF YOU DARE", 504, 880)
+  x.font = `700 22px ${C}`
+  x.fillText("ENTER IF YOU DARE", 504, 900)
 
   x.letterSpacing = "9px"
-  x.font = `600 20px ${C}`
+  x.font = `600 18px ${C}`
   x.fillStyle = COLOR_MAIN_TEXT
-  x.fillText("BY INVITATION ONLY · ADMIT ONE", 504, 930)
+  x.fillText("BY INVITATION ONLY · ADMIT ONE", 504, 945)
 }

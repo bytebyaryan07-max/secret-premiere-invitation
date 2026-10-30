@@ -188,6 +188,7 @@ export default function App() {
 
       {scene === 'invitation' && (
         <div className="sr">
+          <p>{EVENT.presenter} {EVENT.presentsLabel}</p>
           <h2>{EVENT.heading}</h2>
           <p>Prepared for: {name || EVENT.fallbackGuestName}</p>
           <p>Event: {EVENT.name}</p>
