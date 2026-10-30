@@ -10,15 +10,9 @@ export default function NameEntry({ onSubmit }) {
 
   useLayoutEffect(() => {
     const c = gsap.context(() => {
-      gsap.timeline({ delay: 0.3 })
-        .from(".hw-form-card", { opacity: 0, y: 24, scale: 0.96, duration: 1.2, ease: "power3.out" })
-        .from(".fade", { opacity: 0, y: 16, duration: 1.0, stagger: 0.16, ease: "power2.out" }, "-=0.8")
-        .fromTo(
-          ".enter-shadows-btn",
-          { opacity: 0, y: 14, scale: 0.96 },
-          { opacity: 1, y: 0, scale: 1, duration: 0.8, ease: "power2.out", clearProps: "opacity,transform" },
-          "-=0.4"
-        )
+      gsap.timeline({ delay: 0.2 })
+        .from(".hw-form-card", { opacity: 0, y: 20, scale: 0.97, duration: 0.9, ease: "power3.out" })
+        .from(".fade", { opacity: 0, y: 12, duration: 0.8, stagger: 0.12, ease: "power2.out" }, "-=0.6")
     }, root)
     return () => c.revert()
   }, [])
@@ -80,8 +74,45 @@ export default function NameEntry({ onSubmit }) {
             type="submit"
             className="btn cta hw-cta-button enter-shadows-btn"
             aria-label="Enter the shadows"
+            style={{
+              background: '#E87519',
+              color: '#19091F',
+              border: '2px solid #D9A441',
+              minHeight: '48px',
+              padding: '0 24px',
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              position: 'relative',
+              zIndex: 10,
+              marginTop: '24px',
+              marginLeft: 'auto',
+              marginRight: 'auto',
+              fontFamily: "var(--heading), 'Cinzel', serif",
+              fontSize: '1rem',
+              fontWeight: 800,
+              letterSpacing: '0.14em',
+              textTransform: 'uppercase',
+              textDecoration: 'none',
+              borderRadius: '6px',
+              cursor: 'pointer',
+              boxShadow: '0 4px 18px rgba(232, 117, 25, 0.5), 0 0 16px rgba(217, 164, 65, 0.35)',
+              opacity: 1,
+              visibility: 'visible',
+            }}
           >
-            <span className="enter-shadows-label">ENTER THE SHADOWS 🎃</span>
+            <span
+              className="enter-shadows-label"
+              style={{
+                color: '#19091F',
+                fontWeight: 800,
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+              }}
+            >
+              ENTER THE SHADOWS 🎃
+            </span>
           </button>
         </form>
       </div>
